@@ -1,7 +1,7 @@
 ---
 # This workflow integrates ShiftLeft NG SAST with GitHub
 # Visit https://docs.shiftleft.io for help
-name: ShiftLeft
+name: Qwiet
 
 on:
   pull_request:
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Download ShiftLeft CLI
+    - name: Download Qwiet CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
-    # ShiftLeft requires Java 1.8 only for java analysis, 11 is recommended otherwise.
+    # Qwiet requires Java 1.8 only for java analysis, 11 is recommended otherwise.
     - name: Setup Java JDK
       uses: actions/setup-java@v3
       with:
@@ -26,7 +26,7 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
     - name: NextGen Static Analysis
-      run: ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app shiftleft-kotlin-demo --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --kotlin .
+      run: ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app Qwiet-kotlin-GH --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --kotlin .
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
@@ -37,12 +37,12 @@ jobs:
     needs: NextGen-Static-Analysis
     steps:
     - uses: actions/checkout@v3
-    - name: Download ShiftLeft CLI
+    - name: Download Qwiet CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
     - name: Validate Build Rules
       run: |
-        ${GITHUB_WORKSPACE}/sl check-analysis --app shiftleft-kotlin-demo \
+        ${GITHUB_WORKSPACE}/sl check-analysis --app Qwiet-kotlin-GH \
             --github-pr-number=${{github.event.number}} \
             --github-pr-user=${{ github.repository_owner }} \
             --github-pr-repo=${{ github.event.repository.name }} \
