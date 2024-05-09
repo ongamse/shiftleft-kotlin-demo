@@ -29,7 +29,7 @@ jobs:
       id: extract_branch
     - name: NextGen Static Analysis
       run: |
-       ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app Qwiet-kotlinM-GH --verbose --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --kotlin .
+       ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app Qwiet-kotlinM-GH --verbose --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }}
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
